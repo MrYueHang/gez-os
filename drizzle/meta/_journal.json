@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1763119785135,
+      "tag": "0000_rapid_cerebro",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1763120013567,
+      "tag": "0001_true_silk_fever",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1763337136685,
+      "tag": "0002_sad_ultron",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1763442590748,
+      "tag": "0003_worthless_quentin_quire",
+      "breakpoints": true
+    }
+  ]
+}
