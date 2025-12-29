@@ -212,19 +212,20 @@ class SDKServer {
       });
       const { openId, appId, name } = payload as Record<string, unknown>;
 
+      // For local auth, appId might be empty (OAuth not configured)
+      // openId and name are required for all auth types
       if (
         !isNonEmptyString(openId) ||
-        !isNonEmptyString(appId) ||
-        !isNonEmptyString(name)
+        (typeof name !== "string")
       ) {
-        console.warn("[Auth] Session payload missing required fields");
+        console.warn("[Auth] Session payload missing required fields (openId or name)");
         return null;
       }
 
       return {
         openId,
-        appId,
-        name,
+        appId: isNonEmptyString(appId) ? appId : "local-auth",
+        name: name || "",
       };
     } catch (error) {
       console.warn("[Auth] Session verification failed", String(error));
