@@ -16,6 +16,13 @@ RUN pnpm install --frozen-lockfile
 # Copy source code
 COPY . .
 
+# Set build-time environment variables for Vite
+ENV VITE_APP_TITLE="GEZY OS"
+ENV VITE_APP_LOGO="/logo.png"
+ENV VITE_ANALYTICS_ENDPOINT=""
+ENV VITE_ANALYTICS_WEBSITE_ID=""
+ENV VITE_APP_ID=""
+
 # Build the application
 RUN pnpm build
 
