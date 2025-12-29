@@ -11,7 +11,7 @@ COPY package.json pnpm-lock.yaml ./
 COPY patches ./patches
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Copy source code
 COPY . .
@@ -42,7 +42,7 @@ COPY package.json pnpm-lock.yaml ./
 COPY patches ./patches
 
 # Install ALL dependencies (vite needed for conditional imports)
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist
