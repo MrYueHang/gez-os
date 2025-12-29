@@ -36,6 +36,10 @@ services:
       OWNER_OPEN_ID: ${OWNER_OPEN_ID}
       BUILT_IN_FORGE_API_URL: ${BUILT_IN_FORGE_API_URL}
       BUILT_IN_FORGE_API_KEY: ${BUILT_IN_FORGE_API_KEY}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-sk_test_placeholder}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-whsec_placeholder}
+      VITE_APP_TITLE: ${VITE_APP_TITLE:-GEZY OS}
+      VITE_APP_LOGO: ${VITE_APP_LOGO:-/logo.png}
     ports:
       - "3000:3000"
     networks:
