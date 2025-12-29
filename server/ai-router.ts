@@ -265,7 +265,8 @@ function getNextQuestionId(currentQuestionId: string, answer: any): string | nul
   }
 
   // Default: next sequential question
-  const currentNum = parseInt(currentQuestionId.match(/\d+/)?[0] || '0');
+  const match = currentQuestionId.match(/\d+/);
+  const currentNum = match ? parseInt(match[0]) : 0;
   const nextNum = currentNum + 1;
 
   if (nextNum <= 8) {
