@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: gezy_os_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-gezy123}
+      MYSQL_DATABASE: gezy_os
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - gezy_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  app:
+    build: .
+    container_name: gezy_os_app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD:-gezy123}@mysql:3306/gezy_os
+      JWT_SECRET: ${JWT_SECRET}
+      OAUTH_SERVER_URL: ${OAUTH_SERVER_URL:-https://auth.manus.app}
+      VITE_APP_ID: ${VITE_APP_ID}
+      OWNER_OPEN_ID: ${OWNER_OPEN_ID}
+      BUILT_IN_FORGE_API_URL: ${BUILT_IN_FORGE_API_URL}
+      BUILT_IN_FORGE_API_KEY: ${BUILT_IN_FORGE_API_KEY}
+    ports:
+      - "3000:3000"
+    networks:
+      - gezy_network
+    volumes:
+      - ./drizzle:/app/drizzle
+
+volumes:
+  mysql_data:
+
+networks:
+  gezy_network:
+    driver: bridge
