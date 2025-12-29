@@ -7,6 +7,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Users, FileText, MessageSquare, TrendingUp, Scale, BookOpen } from "lucide-react";
 import SmartCityVisualization from "@/components/SmartCityVisualization";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { Link } from "wouter";
 
 export default function Dashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -51,6 +52,14 @@ export default function Dashboard() {
               <h1 className="text-3xl font-bold">Willkommen, {user?.name || "Nutzer"}!</h1>
               <p className="text-muted-foreground mt-1">Verwalten Sie Ihre Fälle und erkunden Sie die Community</p>
             </div>
+            {user?.role === "admin" && (
+              <Link href="/admin">
+                <Button variant="outline">
+                  <Users className="w-4 h-4 mr-2" />
+                  Admin Dashboard
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </header>
@@ -154,7 +163,12 @@ export default function Dashboard() {
                   <div className="text-center py-8 text-muted-foreground">
                     <FileText className="w-12 h-12 mx-auto mb-3 opacity-50" />
                     <p>Keine Fälle vorhanden. Starten Sie einen neuen Fall.</p>
-                    <Button className="mt-4">Neuen Fall erstellen</Button>
+                    <Button
+                      className="mt-4"
+                      onClick={() => alert("Fall-Erstellungs-Dialog wird noch implementiert. Nutzen Sie das Admin-Dashboard für jetzt.")}
+                    >
+                      Neuen Fall erstellen
+                    </Button>
                   </div>
                 )}
               </CardContent>
