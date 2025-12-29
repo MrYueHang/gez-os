@@ -6,6 +6,7 @@ import { paymentRouter } from "./payment-router";
 import { downloadRouter } from "./download-router";
 import { adminRouter } from "./admin-router";
 import { localAuthRouter } from "./local-auth";
+import { aiRouter } from "./ai-router";
 import { z } from "zod";
 import {
   getCasesByUserId,
@@ -124,6 +125,9 @@ export const appRouter = router({
 
   // Admin router
   admin: adminRouter,
+
+  // AI Services router
+  ai: aiRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Community from "./pages/Community";
 import ArgumentSynthesizer from "./pages/ArgumentSynthesizer";
 import Login from "./pages/Login";
+import SmartCaseInterview from "./pages/SmartCaseInterview";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -24,6 +25,7 @@ function Router() {
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/community" component={Community} />
       <Route path="/arguments" component={ArgumentSynthesizer} />
+      <Route path="/smart-interview" component={SmartCaseInterview} />
       <Route path="/404" component={NotFound} />
       <Route path="/" component={Home} />
       {/* Final fallback route */}
