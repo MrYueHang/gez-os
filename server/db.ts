@@ -19,7 +19,7 @@ import { ENV } from './_core/env';
 let _db: ReturnType<typeof drizzle> | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
-export async function getDb() {
+export function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
       _db = drizzle(process.env.DATABASE_URL);
@@ -28,7 +28,7 @@ export async function getDb() {
       _db = null;
     }
   }
-  return _db;
+  return _db!;
 }
 
 export async function upsertUser(user: InsertUser): Promise<void> {
@@ -36,7 +36,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     throw new Error("User openId is required for upsert");
   }
 
-  const db = await getDb();
+  const db = getDb();
   if (!db) {
     console.warn("[Database] Cannot upsert user: database not available");
     return;
@@ -91,7 +91,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
 }
 
 export async function getUserByOpenId(openId: string) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) {
     console.warn("[Database] Cannot get user: database not available");
     return undefined;
@@ -103,7 +103,7 @@ export async function getUserByOpenId(openId: string) {
 }
 
 export async function getUserById(id: number) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return undefined;
 
   const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
@@ -112,14 +112,14 @@ export async function getUserById(id: number) {
 
 // Cases queries
 export async function getCasesByUserId(userId: number) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   return db.select().from(cases).where(eq(cases.userId, userId)).orderBy(desc(cases.createdAt));
 }
 
 export async function getCaseById(caseId: number) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return undefined;
 
   const result = await db.select().from(cases).where(eq(cases.id, caseId)).limit(1);
@@ -128,7 +128,7 @@ export async function getCaseById(caseId: number) {
 
 // Community posts queries
 export async function getCommunityPosts(limit = 20, offset = 0) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   return db
@@ -140,7 +140,7 @@ export async function getCommunityPosts(limit = 20, offset = 0) {
 }
 
 export async function getCommunityPostsByCategory(categoryValue: string, limit = 20) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   return db
@@ -152,7 +152,7 @@ export async function getCommunityPostsByCategory(categoryValue: string, limit =
 }
 
 export async function searchCommunityPosts(query: string, limit = 20) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   return db
@@ -165,7 +165,7 @@ export async function searchCommunityPosts(query: string, limit = 20) {
 
 // Polls queries
 export async function getActivePollsWithVotes(limit = 10) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   const activePollsData = await db
@@ -190,7 +190,7 @@ export async function getActivePollsWithVotes(limit = 10) {
 }
 
 export async function getUserPollVote(pollId: number, userId: number) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return undefined;
 
   const result = await db
@@ -204,7 +204,7 @@ export async function getUserPollVote(pollId: number, userId: number) {
 
 // Arguments queries
 export async function getArgumentsByPosition(position: number, limit = 20) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   return db
@@ -216,7 +216,7 @@ export async function getArgumentsByPosition(position: number, limit = 20) {
 }
 
 export async function getOpinionLeaders() {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   return db
@@ -228,7 +228,7 @@ export async function getOpinionLeaders() {
 
 // Wiki queries
 export async function getWikiArticles(limit = 50) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   return db
@@ -240,7 +240,7 @@ export async function getWikiArticles(limit = 50) {
 }
 
 export async function getWikiArticleBySlug(slug: string) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return undefined;
 
   const result = await db
@@ -254,7 +254,7 @@ export async function getWikiArticleBySlug(slug: string) {
 
 // Lawyer queries
 export async function getLawyerProfiles(limit = 50) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   return db
@@ -266,7 +266,7 @@ export async function getLawyerProfiles(limit = 50) {
 }
 
 export async function getLawyerProfileByUserId(userId: number) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return undefined;
 
   const result = await db
@@ -280,7 +280,7 @@ export async function getLawyerProfileByUserId(userId: number) {
 
 // Word cloud queries
 export async function getWordCloudData(limit = 100) {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   return db
@@ -292,7 +292,7 @@ export async function getWordCloudData(limit = 100) {
 
 // External resources
 export async function getExternalResources() {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return [];
 
   return db
@@ -304,7 +304,7 @@ export async function getExternalResources() {
 
 // Statistics
 export async function getPlatformStatistics() {
-  const db = await getDb();
+  const db = getDb();
   if (!db) return null;
 
   try {
