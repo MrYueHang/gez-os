@@ -28,8 +28,8 @@ export default function Login() {
       } else {
         await registerMutation.mutateAsync({ email, password, name });
       }
-      // Redirect to home after successful login/register
-      setLocation("/");
+      // Redirect to dashboard after successful login/register
+      setLocation("/dashboard");
     } catch (err: any) {
       setError(err.message || "An error occurred");
     }

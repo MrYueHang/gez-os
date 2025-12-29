@@ -76,9 +76,11 @@ export default function Home() {
                 Transparenz und Kontrolle in komplexen Situationen. GEZy OS führt Sie verständlich durch Ihre Situation, ordnet Dokumente und Fristen, und zeigt Ihnen klare Handlungspfade – von der Selbsthilfe bis zur optionalen anwaltlichen Unterstützung.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
-                  Zum Entry-Terminal <ChevronRight className="ml-2 w-4 h-4" />
-                </Button>
+                <Link href={isAuthenticated ? "/dashboard" : "/login"}>
+                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                    Zum Entry-Terminal <ChevronRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
                 <Button size="lg" variant="outline">
                   Mehr erfahren
                 </Button>
