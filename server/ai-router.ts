@@ -13,6 +13,12 @@ import {
   type InterviewSession,
   type InterviewResponse,
 } from "./ai-services";
+import {
+  generatePersonalizedDocument,
+  collectFeedback,
+  reviseDocument,
+  type DocumentFeedback,
+} from "./ai-document-generator";
 import { getDb } from "./db";
 import { cases } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
@@ -253,6 +259,90 @@ export const aiRouter = router({
         dueDiligence,
         recommendations
       };
+    }),
+
+  /**
+   * Generate personalized legal document (Widerspruch, Klage, etc.)
+   */
+  generateDocument: protectedProcedure
+    .input(z.object({
+      extractedData: z.any(),
+      interviewSession: z.any(),
+      dueDiligence: z.any(),
+      documentType: z.enum(['widerspruch', 'klage', 'anfrage']),
+      userApiKey: z.object({
+        provider: z.enum(['gemini', 'openai', 'anthropic']),
+        key: z.string()
+      }).optional(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      // Get user profile with tier info
+      // TODO: Fetch from database
+      const userProfile = {
+        id: ctx.user.id,
+        name: ctx.user.name,
+        email: ctx.user.email || '',
+        address: undefined,
+        tier: 'pro' as const, // TODO: Get from subscription table
+        apiKey: input.userApiKey
+      };
+
+      const document = await generatePersonalizedDocument(
+        input.extractedData,
+        input.interviewSession,
+        input.dueDiligence,
+        userProfile,
+        input.documentType
+      );
+
+      // TODO: Save to database
+
+      return document;
+    }),
+
+  /**
+   * Revise document based on user feedback
+   */
+  reviseDocument: protectedProcedure
+    .input(z.object({
+      documentId: z.number(),
+      userFeedback: z.string(),
+      originalDocument: z.any(),
+      context: z.any(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      const revised = await reviseDocument(
+        input.originalDocument,
+        input.userFeedback,
+        input.context
+      );
+
+      // TODO: Save revision to database
+
+      return revised;
+    }),
+
+  /**
+   * Submit feedback on generated document
+   */
+  submitFeedback: protectedProcedure
+    .input(z.object({
+      documentId: z.number(),
+      rating: z.number().min(1).max(5),
+      wasHelpful: z.boolean(),
+      wasUsed: z.boolean(),
+      outcome: z.enum(['success', 'partial', 'rejected', 'pending']).optional(),
+      improvementSuggestions: z.string().optional(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      const feedback: Omit<DocumentFeedback, 'createdAt'> = {
+        ...input,
+        userId: ctx.user.id,
+      };
+
+      await collectFeedback(feedback);
+
+      return { success: true };
     }),
 });
 
