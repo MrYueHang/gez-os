@@ -1,7 +1,7 @@
 import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import * as bcrypt from "bcryptjs";
+import bcrypt from "bcryptjs";
 import * as db from "./db";
 import { getDb } from "./db";
 import { users } from "../drizzle/schema";
