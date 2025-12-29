@@ -48,7 +48,17 @@ export default function Home() {
                 </Button>
               </div>
             ) : (
-              <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => window.location.href = getLoginUrl()}>
+              <Button
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() => {
+                  const loginUrl = getLoginUrl();
+                  if (loginUrl.startsWith("#oauth")) {
+                    alert("OAuth ist noch nicht konfiguriert. Bitte kontaktieren Sie den Administrator.");
+                  } else {
+                    window.location.href = loginUrl;
+                  }
+                }}
+              >
                 Login
               </Button>
             )}
