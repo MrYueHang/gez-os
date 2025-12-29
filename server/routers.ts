@@ -5,6 +5,7 @@ import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { paymentRouter } from "./payment-router";
 import { downloadRouter } from "./download-router";
 import { adminRouter } from "./admin-router";
+import { localAuthRouter } from "./local-auth";
 import { z } from "zod";
 import {
   getCasesByUserId,
@@ -37,6 +38,7 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+    local: localAuthRouter,
   }),
 
   // Cases router
