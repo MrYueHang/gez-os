@@ -39,10 +39,12 @@ export function getSessionCookieOptions(
   //       ? hostname
   //       : undefined;
 
+  // Use "lax" for same-site cookies (works with reverse proxy setups)
+  // "none" requires secure: true which doesn't work behind nginx proxy
   return {
     httpOnly: true,
     path: "/",
-    sameSite: "none",
+    sameSite: "lax",
     secure: isSecureRequest(req),
   };
 }

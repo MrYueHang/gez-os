@@ -15,6 +15,7 @@ export default function Login() {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
 
+  const utils = trpc.useUtils();
   const loginMutation = trpc.auth.local.login.useMutation();
   const registerMutation = trpc.auth.local.register.useMutation();
 
@@ -28,6 +29,13 @@ export default function Login() {
       } else {
         await registerMutation.mutateAsync({ email, password, name });
       }
+
+      // Invalidate auth cache to force refetch with new session cookie
+      await utils.auth.me.invalidate();
+
+      // Small delay to ensure cookie is set before redirect
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       // Redirect to dashboard after successful login/register
       setLocation("/dashboard");
     } catch (err: any) {
