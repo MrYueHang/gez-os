@@ -5,6 +5,7 @@ import { ChevronRight, Zap, Users, Shield, Lightbulb, GitBranch } from "lucide-r
 import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
 import GezFlow from "@/components/GezFlow";
 import Architecture from "@/components/Architecture";
+import { Link } from "wouter";
 
 export default function Home() {
   // The useAuth hook provides authentication state
@@ -48,11 +49,11 @@ export default function Home() {
                 </Button>
               </div>
             ) : (
-              <a href="/login">
+              <Link href="/login">
                 <Button className="bg-blue-600 hover:bg-blue-700">
                   Login
                 </Button>
-              </a>
+              </Link>
             )}
           </nav>
         </div>

@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { trpc } from "@/lib/trpc";
 import { APP_TITLE } from "@/const";
+import { useLocation } from "wouter";
 
 export default function Login() {
+  const [, setLocation] = useLocation();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +29,7 @@ export default function Login() {
         await registerMutation.mutateAsync({ email, password, name });
       }
       // Redirect to home after successful login/register
-      window.location.href = "/";
+      setLocation("/");
     } catch (err: any) {
       setError(err.message || "An error occurred");
     }
@@ -119,12 +121,13 @@ export default function Login() {
             </button>
           </div>
           <div className="mt-4 text-center">
-            <a
-              href="/"
-              className="text-sm text-muted-foreground hover:text-foreground"
+            <button
+              type="button"
+              onClick={() => setLocation("/")}
+              className="text-sm text-muted-foreground hover:text-foreground underline"
             >
               Zurück zur Startseite
-            </a>
+            </button>
           </div>
         </CardContent>
       </Card>
