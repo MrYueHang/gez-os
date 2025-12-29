@@ -203,19 +203,35 @@ export default function AdminDashboard() {
                   <CardTitle>Schnellaktionen</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button className="w-full justify-start" variant="outline">
+                  <Button
+                    className="w-full justify-start"
+                    variant="outline"
+                    onClick={() => setActiveTab("documents")}
+                  >
                     <Upload className="w-4 h-4 mr-2" />
                     Dokument hochladen
                   </Button>
-                  <Button className="w-full justify-start" variant="outline">
+                  <Button
+                    className="w-full justify-start"
+                    variant="outline"
+                    onClick={() => setActiveTab("packages")}
+                  >
                     <Package className="w-4 h-4 mr-2" />
                     Neues Paket erstellen
                   </Button>
-                  <Button className="w-full justify-start" variant="outline">
+                  <Button
+                    className="w-full justify-start"
+                    variant="outline"
+                    onClick={() => setActiveTab("staff")}
+                  >
                     <Users className="w-4 h-4 mr-2" />
                     Benutzer verwalten
                   </Button>
-                  <Button className="w-full justify-start" variant="outline">
+                  <Button
+                    className="w-full justify-start"
+                    variant="outline"
+                    onClick={() => toast.info("Einstellungen folgen in Kürze")}
+                  >
                     <Settings className="w-4 h-4 mr-2" />
                     Einstellungen
                   </Button>
@@ -363,10 +379,19 @@ function DocumentRow({ document }: { document: any }) {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="sm">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => toast.info(`Bearbeiten von ${document.filename} - Funktion folgt`)}
+        >
           Bearbeiten
         </Button>
-        <Button variant="ghost" size="sm" className="text-red-600">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-red-600"
+          onClick={() => toast.error(`Löschen von ${document.filename} - Bitte bestätigen Sie die Aktion`)}
+        >
           Löschen
         </Button>
       </div>
@@ -393,7 +418,11 @@ function PackageRow({ package: pkg }: { package: any }) {
         }`}>
           {pkg.isActive ? "Aktiv" : "Inaktiv"}
         </span>
-        <Button variant="ghost" size="sm">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => toast.info(`Bearbeiten von ${pkg.name} - Funktion folgt`)}
+        >
           Bearbeiten
         </Button>
       </div>
@@ -420,7 +449,11 @@ function StaffRow({ member }: { member: any }) {
         }`}>
           {member.role}
         </span>
-        <Button variant="ghost" size="sm">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => toast.info(`Rolle ändern für ${member.name} - Funktion folgt`)}
+        >
           Ändern
         </Button>
       </div>
